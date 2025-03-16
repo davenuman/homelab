@@ -1,0 +1,10 @@
+# TaskChampion server for task warrior synchronization.
+# https://github.com/GothenburgBitFactory/taskchampion
+# https://gothenburgbitfactory.org/taskchampion/http.html
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - statefulset.yaml
+  - service.yaml
+  - ingress.yaml

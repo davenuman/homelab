@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/tls-acme: "true"
+    spec.ingressClassName: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirectscheme@kubernetescrd
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: taskchampion
+    app.kubernetes.io/name: taskchampion
+    app.kubernetes.io/version: 2.4.2
+  name: taskchampion
+  namespace: taskchampion
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: taskchampion.k.gv.ca
+      http:
+        paths:
+          - backend:
+              service:
+                name: taskchampion
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - taskchampion.k.gv.ca
+      secretName: taskchampion-tls
