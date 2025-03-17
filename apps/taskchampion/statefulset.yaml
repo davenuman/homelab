@@ -25,7 +25,12 @@ spec:
           livenessProbe:
             exec:
               command:
-                - echo
+                - wget
+                - --spider
+                - --quiet
+                - --tries=1
+                - --timeout=2
+                - http://127.0.0.1:8080/
             failureThreshold: 3
             initialDelaySeconds: 10
             periodSeconds: 10
@@ -39,7 +44,12 @@ spec:
           readinessProbe:
             exec:
               command:
-                - echo
+                - wget
+                - --spider
+                - --quiet
+                - --tries=1
+                - --timeout=2
+                - http://127.0.0.1:8080/
             failureThreshold: 3
             initialDelaySeconds: 10
             periodSeconds: 10
