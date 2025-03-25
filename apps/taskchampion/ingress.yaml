@@ -5,7 +5,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/tls-acme: "true"
     spec.ingressClassName: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirectscheme@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirectscheme@kubernetescrd
   generation: 1
   labels:
     app.kubernetes.io/instance: taskchampion
