@@ -1,0 +1,58 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  # This one is not used yet. Transitioning to flux.
+  # Still using the letsencrypt-production and letsencrypt-stage for now.
+  # This ClusterIssuer is just a placeholder for now.
+  name: letsencrypt
+spec:
+  acme:
+    email: davenuman@users.noreply.github.com
+    # The server is replaced in /clusters/production/infrastructure.yaml
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-nginx
+    solvers:
+      - dns01:
+          cloudflare:
+            apiKeySecretRef:
+              key: api-key
+              name: cloudflare-api-key-secret
+            email: davenuman@users.noreply.github.com
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    email: davenuman@users.noreply.github.com
+    privateKeySecretRef:
+      name: letsencrypt-production-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          cloudflare:
+            apiKeySecretRef:
+              key: api-key
+              name: cloudflare-api-key-secret
+            email: davenuman@users.noreply.github.com
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-stage
+spec:
+  acme:
+    email: davenuman@users.noreply.github.com
+    privateKeySecretRef:
+      name: letsencrypt-stage-account-key
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          cloudflare:
+            apiKeySecretRef:
+              key: api-key
+              name: cloudflare-api-key-secret
+            email: davenuman@users.noreply.github.com
