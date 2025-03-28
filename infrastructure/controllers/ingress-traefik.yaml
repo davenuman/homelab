@@ -31,12 +31,3 @@ spec:
         name: traefik
         namespace: traefik
       interval: 12h
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirectscheme
-  namespace: traefik
-spec:
-  redirectScheme:
-    scheme: https
