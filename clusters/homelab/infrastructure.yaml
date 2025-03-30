@@ -34,8 +34,14 @@ spec:
   patches:
     - patch: |
         - op: replace
+          path: /spec/acme/email
+          value: dave@gv.ca
+        - op: replace
+          path: /spec/acme/solvers/0/dns01/cloudflare/email
+          value: dave@gv.ca
+        - op: replace
           path: /spec/acme/server
           value: https://acme-v02.api.letsencrypt.org/directory
       target:
         kind: ClusterIssuer
-        name: letsencrypt
+        name: letsencrypt-production
