@@ -20,4 +20,10 @@ spec:
       containers:
         - image: registry:2
           name: registry
-          resources: {}
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 32Mi
