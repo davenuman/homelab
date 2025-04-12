@@ -5,3 +5,4 @@ resources:
   - cert-manager.yaml
   - ingress-traefik.yaml
   - postgres-operator.yaml
+  - minio-operator.yaml
