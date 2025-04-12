@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/tls-acme: "true"
+    spec.ingressClassName: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirectscheme@kubernetescrd
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: csd
+    app.kubernetes.io/name: csd
+    app.kubernetes.io/version: 2.4.2
+  name: csd
+  namespace: csd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: csd.k.gv.ca
+      http:
+        paths:
+          - backend:
+              service:
+                name: csd
+                port:
+                  number: 4321
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - csd.k.gv.ca
+      secretName: csd-tls

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: csd
+  name: csd
+  namespace: csd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csd
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: csd
+    spec:
+      containers:
+        - image: registry.k.gv.ca/csd:latest
+          name: csd
+          resources: {}

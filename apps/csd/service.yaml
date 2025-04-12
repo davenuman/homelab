@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/name: csd
+  name: csd
+  namespace: csd
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: csd
+      port: 4321
+      protocol: TCP
+      targetPort: 4321
+  selector:
+    app: csd
+  sessionAffinity: None
+  type: ClusterIP
