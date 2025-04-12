@@ -6,3 +6,4 @@ resources:
   - ingress-traefik.yaml
   - postgres-operator.yaml
   - minio-operator.yaml
+  - mongodb-operator.yaml
