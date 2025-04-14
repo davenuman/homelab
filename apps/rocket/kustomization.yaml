@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - serviceaccount.yaml
-  - secret-salt.yaml
   - mongodb.yaml
-  # - rocketchat.yaml
+  - rocketchat.yaml
+  - external-secret-mongo.yaml

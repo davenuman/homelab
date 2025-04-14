@@ -5,14 +5,14 @@ metadata:
   name: mongodb
   namespace: rocketchat
 spec:
-  members: 2
+  members: 1
   type: ReplicaSet
-  version: "6.0.5"
+  version: "8.0.6"
   security:
     authentication:
-      modes: ["SCRAM"]
+      modes: ["SCRAM", "SCRAM-SHA-1"]
   users:
-    - name: app
+    - name: rocketchat
       db: admin
       passwordSecretRef: # a reference to the secret that will be used to generate the user's password
         name: salt
@@ -21,6 +21,10 @@ spec:
           db: admin
         - name: userAdminAnyDatabase
           db: admin
+        - name: root
+          db: admin
+        - name: root
+          db: rocketchat
       scramCredentialsSecretName: my-scram
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib

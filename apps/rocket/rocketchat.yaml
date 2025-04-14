@@ -1,0 +1,53 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: rocketchat
+  namespace: rocketchat
+spec:
+  interval: 24h
+  url: https://rocketchat.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rocketchat
+  namespace: rocketchat
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: rocketchat
+      # version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: rocketchat
+        namespace: rocketchat
+      interval: 12h
+  values:
+    replicaCount: 1
+    image:
+      tag: 7.12.1
+    mongodb:
+      enabled: false
+    ## MongoDB URL if using an externally provisioned MongoDB
+    externalMongodbUrl: mongodb://rocketchat:managedsecret@mongodb-svc.rocketchat.svc.cluster.local/rocketchat?ssl=false&authSource=admin
+    externalMongodbOplogUrl: mongodb://rocketchat:managedsecret@mongodb-svc.rocketchat.svc.cluster.local/local?replicaSet=mongodb&ssl=false&authSource=admin
+    host: chat.gv.ca
+    microservices:
+      enabled: false
+    ingress:
+      enabled: true
+      hostName: "chat.gv.ca"
+      ingressClassName: "traefik"
+      nginx:
+        enabled: false
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: traefik
+        kubernetes.io/tls-acme: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirectscheme@kubernetescrd
+      tls:
+        - secretName: rocketchat-tls
+          hosts:
+            - chat.gv.ca
