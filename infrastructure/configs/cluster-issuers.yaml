@@ -5,6 +5,26 @@ metadata:
   # This one is not used yet. Transitioning to flux.
   # Still using the letsencrypt-production and letsencrypt-stage for now.
   # This ClusterIssuer is just a placeholder for now.
+  name: letsencrypt-http
+spec:
+  acme:
+    # The server is replaced in /clusters/production/infrastructure.yaml
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: davenuman@users.noreply.github.com
+    privateKeySecretRef:
+      name: letsencrypt-traefik
+    solvers:
+      - selector: {}
+        http01:
+          ingress:
+            ingressClassName: traefik
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  # This one is not used yet. Transitioning to flux.
+  # Still using the letsencrypt-production and letsencrypt-stage for now.
+  # This ClusterIssuer is just a placeholder for now.
   name: letsencrypt
 spec:
   acme:
@@ -50,6 +70,10 @@ spec:
       name: letsencrypt-stage-account-key
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     solvers:
+      - selector: {}
+        http01:
+          ingress:
+            ingressClassName: traefik
       - dns01:
           cloudflare:
             apiKeySecretRef:
