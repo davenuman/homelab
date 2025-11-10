@@ -1,0 +1,16 @@
+image:
+  pullPolicy: IfNotPresent
+  repository: registry.rocket.chat/rocketchat/rocket.chat
+  # tag: <release> # Set the Rocket.Chat release
+
+mongodb:
+  auth:
+    passwords:
+      - rocketchat
+    rootPassword: rocketchatroot
+
+microservices:
+  enabled: true # Enable microservices
+replicaCount: 1
+
+host: domain.xyz # Replace with your Rocket.Chat domain
