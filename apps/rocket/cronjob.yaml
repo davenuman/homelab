@@ -1,0 +1,79 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  annotations:
+  name: rocket-data-backup
+  namespace: rocketchat
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: rocket-data-backup
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - args:
+                - backup
+                - --host
+                - cronjob-pod
+                - --tag=k8s
+                - --tag=rocket
+                - --tag=secrets
+                - /rocket/mongodb
+              env:
+                - name: RESTIC_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: RESTIC_PASSWORD
+                      name: restic
+                - name: RESTIC_REPOSITORY
+                  valueFrom:
+                    secretKeyRef:
+                      key: RESTIC_REPOSITORY
+                      name: restic
+              image: registry.k.gv.ca/restic-utility
+              imagePullPolicy: Always
+              name: rocket-data-backup
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /root/.ssh/config
+                  name: ssh-config
+                  subPath: config
+                - mountPath: /root/.ssh/id_rsa
+                  name: ssh-key
+                  subPath: id_rsa
+                - mountPath: /rocket/mongodb
+                  name: data
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - name: ssh-config
+              secret:
+                defaultMode: 256
+                items:
+                  - key: ssh-config
+                    path: config
+                secretName: restic
+            - name: ssh-key
+              secret:
+                defaultMode: 256
+                items:
+                  - key: id_rsa
+                    path: id_rsa
+                secretName: restic
+            - name: data
+              persistentVolumeClaim:
+                claimName: data-mongodb-0
+  schedule: 35 15 * * *
+  successfulJobsHistoryLimit: 3
+  suspend: false

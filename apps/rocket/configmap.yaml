@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backup-scripts
+  namespace: rocketchat
+data:
+  backup.sh: |
+    #!/usr/bin/env sh
+
+    mongodump --uri="${MONGO_URL}"
+
+    restic backup --host cronjob-pod \
+      --tag=k8s --tag=rocketchat  \
+      /dump/rocketchat
+  automation-mongod.conf: |
+    net:
+      bindIp: 0.0.0.0 ##changeme
+      port: 27017
+    replication:
+      replSetName: mongodb
+    security:
+      authorization: enabled
+      keyFile: /var/lib/mongodb-mms-automation/authentication/keyfile
+    setParameter:
+      authenticationMechanisms: SCRAM-SHA-256,SCRAM-SHA-1
+    storage:
+      dbPath: /data
+      engine: wiredTiger
+      wiredTiger:
+        engineConfig:
+          journalCompressor: zlib

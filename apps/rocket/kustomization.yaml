@@ -6,3 +6,6 @@ resources:
   - mongodb.yaml
   - rocketchat.yaml
   - external-secret-mongo.yaml
+  - external-secret-restic.yaml
+  - configmap.yaml
+  - cronjob.yaml
