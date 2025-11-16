@@ -1,0 +1,25 @@
+---
+# config options: https://docs.hyperspike.io/valkey-operator/configuration-options/
+apiVersion: hyperspike.io/v1
+kind: Valkey
+metadata:
+  labels:
+    app.kubernetes.io/name: valkey-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: valkey
+  namespace: gitea
+spec:
+  nodes: 2
+  volumePermissions: true
+  prometheus: false
+  tls: false
+  certIssuer: selfsigned
+  prometheusLabels:
+    prometheus: prometheus
+  storage:
+    spec:
+      resources:
+        requests:
+          storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
