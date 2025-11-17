@@ -4,3 +4,10 @@ resources:
   - namespace.yaml
   - cnpg.cluster.yaml
   - valkey.yaml
+  - config.yaml
+  - deployment.yaml
+  - http-svc.yaml
+  - init.yaml
+  - pvc.yaml
+  - ssh-svc.yaml
+  - ingress.yaml
