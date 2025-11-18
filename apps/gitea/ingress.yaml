@@ -6,16 +6,16 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/tls-acme: "true"
     spec.ingressClassName: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirectscheme@kubernetescrd
   labels:
     app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: gitea
-    app.kubernetes.io/version: 2.4.2
   name: gitea
   namespace: gitea
 spec:
   ingressClassName: traefik
   rules:
-    - host: gitea.gv.ca
+    - host: git.gv.ca
       http:
         paths:
           - backend:
@@ -27,5 +27,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - gitea.gv.ca
+        - git.gv.ca
       secretName: gitea-tls

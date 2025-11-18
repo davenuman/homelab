@@ -13,16 +13,33 @@ metadata:
     app.kubernetes.io/version: "1.24.6"
     version: "1.24.6"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    {}
+  annotations: {}
 spec:
   type: ClusterIP
-  clusterIP: None
+  clusterIP:
   ports:
-  - name: ssh
-    port: 22
-    targetPort: 2222
-    protocol: TCP
+    - name: ssh
+      port: 22
+      targetPort: 2222
+      protocol: TCP
   selector:
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssh-nodeport
+  namespace: gitea
+spec:
+  ports:
+    - name: ssh
+      nodePort: 32222
+      port: 32222
+      protocol: TCP
+      targetPort: 2222
+  selector:
+    app.kubernetes.io/name: gitea
+    app.kubernetes.io/instance: gitea
+  sessionAffinity: None
+  type: NodePort
